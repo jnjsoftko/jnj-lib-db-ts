@@ -9,3 +9,7 @@ _*/
 .env
 .env.*
 !.env.example
+
+
+# test
+test*.*

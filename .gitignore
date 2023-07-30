@@ -14,6 +14,7 @@ dist/
 cjs/
 esm/
 
+
 # folders
 package/
 _*/
@@ -25,3 +26,6 @@ _*/
 .env
 .env.*
 !.env.example
+
+# test
+test*.ts

@@ -24,7 +24,9 @@
   "description": "JnJ Utility Library For Database(mysql, sqlite, pocketbase,...) in Typescript",
   "author": "Jnj Soft Ko <jnjsoft.ko@gmail.com>",
   "dependencies": {
-    "jnj-lib-base": "^0.0.5",
+    "@octokit/rest": "^20.0.1",
+    "axios": "^1.4.0",
+    "jnj-lib-base": "^0.0.7",
     "jnj-lib-doc": "^0.0.3",
     "jnj-lib-google": "^0.0.2",
     "mysql": "^2.18.1",
