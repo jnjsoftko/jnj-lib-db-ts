@@ -1,20 +1,62 @@
-// & Import
-import { loadCsv } from "jnj-lib-doc";
+/** pbApi
+ *
+ * Description
+ *   - A Class For Using Pocketbase API
+ *
+ * Functions
+ *   [X]
+ *
+ * Usages
+ *   - const pba = PbApi("http://127.0.0.1:8090")
+ *   - pba.init(<email>, <password>)
+ *
+ * Requirements
+ *   - jnj-lib-base jnj-lib-doc jnj-lib-google
+ *   - sqlite3 pocketbase mysql
+ *   ```sh
+ *   $ npm install jnj-lib-base jnj-lib-google jnj-lib-doc jnj-lib-db
+ *   $ npm @octokit/rest dotenv googleapis@105 @google-cloud/local-auth@2.1.0 csv js-yaml ini xlsx sqlite3 pocketbase mysql
+ *   ```
+ *
+ *  > `/.env`
+ *  ```
+ *  ENV_SETTINGS_PATH=C:/JnJ-soft/Developments/_Settings
+ *  PUBLIC_POCKETBASE_URL="http://127.0.0.1:8090"
+ *  POCKETBASE_ADMIN_EMAIL=
+ *  POCKETBASE_ADMIN_PASSWORD=
+ *  ```
+ *
+ * References
+ *   -
+ *
+ * Authors
+ *   - Moon In Learn <mooninlearn@gmail.com>
+ *   - JnJsoft Ko <jnjsoft.ko@gmail.com>
+ */
+
+// & Import AREA
+// &---------------------------------------------------------------------------
+// ? Builtin Modules
+
+// ? External Modules
 import PocketBase from "pocketbase";
 
-import {
-  updateDictKeys,
-  updateDictsKeys,
-  sqlFieldType,
-  pocketbaseSchemaFromMysqlSchema,
-} from "./pbUtils.js";
+// ? External Modules
+import dotenv from "dotenv";
 
-// & CLASS
+// ? UserMade Modules
+import { loadCsv } from "jnj-lib-doc";
+
+// ? Local Modules
+import { updateDictKeys, updateDictsKeys, sqlFieldType, pocketbaseSchemaFromMysqlSchema } from "./pbUtils.js";
+
+// & Class AREA
+// &---------------------------------------------------------------------------
 export class PbApi {
   pb;
 
-  // & CONSTRUCTOR
-  constructor(url) {
+  // * CONSTRUCTOR
+  constructor(url: string) {
     this.pb = new PocketBase(url);
   }
 
@@ -23,7 +65,7 @@ export class PbApi {
     await this.pb.admins.authWithPassword(email, password);
   }
 
-  // & CRUD
+  // * CRUD
   /**
    * Create Base Collection
    *
@@ -34,7 +76,7 @@ export class PbApi {
    *
    * createBaseCollection = async('level', [])
    */
-  async createBaseCollection({ name: string = "", schema }) {
+  async createBaseCollection({ name = "", schema }) {
     await this.pb.collections.create({
       name,
       type: "base",
@@ -55,25 +97,14 @@ export class PbApi {
    *
    * insert('level', {})
    */
-  async query({
-    name,
-    option = {},
-    filter = "",
-    id,
-    page = 1,
-    perPage = 50,
-    maps,
-    act = "list",
-  }) {
+  async query({ name, option = {}, filter = "", id, page = 1, perPage = 50, maps, act = "list" }) {
     // async query({ name, sort='-created', id, expand='', filter='', maps = {}, act = 'list' }) {
     // data = maps == {} ? data : updateDictKeys(data, maps);
-    let data = [];
+    let data;
     act = act.toLowerCase();
     switch (act) {
       case "list":
-        data = await this.pb
-          .collection(name)
-          .getFullList(option ?? { sort: "-created" });
+        data = await this.pb.collection(name).getFullList(option ?? { sort: "-created" });
         break;
       case "search":
         // option: {filter: 'created >= "2022-01-01 00:00:00" && someField1 != someField2', expand: 'relField1,relField2.subRelField'}
@@ -89,7 +120,7 @@ export class PbApi {
         break;
       // break;
     }
-    if (!maps || maps == {}) {
+    if (!maps) {
       // console.log('maps1', maps);
       return data;
     } else if (act === "first" || act == "view") {
@@ -118,8 +149,8 @@ export class PbApi {
    *
    * insert('level', {})
    */
-  async mutateOne({ name, data, id, maps = {}, act = "insert" }) {
-    data = !maps || maps == {} ? data : updateDictKeys(data, maps);
+  async mutateOne({ name, data, id, maps = null, act = "insert" }) {
+    data = !maps ? data : updateDictKeys(data, maps);
     switch (act.toLowerCase()) {
       case "insert":
         await this.pb.collection(name).create(data);
@@ -150,8 +181,8 @@ export class PbApi {
    *
    * insert('level', {})
    */
-  async mutate({ name, data, ids, maps = {}, act = "insert" }) {
-    data = maps == {} ? data : updateDictsKeys(data, maps);
+  async mutate({ name, data, ids, maps, act = "insert" }) {
+    data = !maps ? data : updateDictsKeys(data, maps);
     switch (act.toLowerCase()) {
       case "insert":
         for (let d of data) {
@@ -176,19 +207,19 @@ export class PbApi {
     }
   }
 
-  /**
-   * Insert Data By Csv
-   *
-   * @param name - collection name
-   * @param data - inserted data(dicts)
-   *
-   * @example
-   *
-   * await insertByCsv("level", "../data/level.csv");
-   */
-  async insertByCsv({ name, path, maps = {} }) {
-    let data = loadCsv(path);
-    data = maps == {} ? data : updateDictKeys(data, maps);
-    await this.insert(name, data);
-  }
+  // /**
+  //  * Insert Data By Csv
+  //  *
+  //  * @param name - collection name
+  //  * @param data - inserted data(dicts)
+  //  *
+  //  * @example
+  //  *
+  //  * await insertByCsv("level", "../data/level.csv");
+  //  */
+  // async insertByCsv({ name = "", path = "", maps = null }) {
+  //   let data = loadCsv(path);
+  //   data = !maps ? data : updateDictKeys(data, maps);
+  //   await this.insert(name, data);
+  // }
 }

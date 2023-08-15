@@ -99,9 +99,7 @@ const sqlFieldType = (str: string) => {
 
   if (str.includes("int")) {
     str = "integer";
-  } else if (
-    ["float", "decimal", "double"].some((dtype) => str.includes(dtype))
-  ) {
+  } else if (["float", "decimal", "double"].some((dtype) => str.includes(dtype))) {
     str = "real";
   } else {
     str = "text";
@@ -172,10 +170,7 @@ const sqlFieldDefault = (str: string) => {
 const sqlFieldExtra = (str: string) => {
   if (!str) return "";
   str = str.toUpperCase();
-  return str
-    .replace("AUTO_INCREMENT", "AUTOINCREMENT")
-    .replace("DEFAULT_GENERATED", "")
-    .replace(" ON UPDATE CURRENT_TIMESTAMP", "");
+  return str.replace("AUTO_INCREMENT", "AUTOINCREMENT").replace("DEFAULT_GENERATED", "").replace(" ON UPDATE CURRENT_TIMESTAMP", "");
 };
 
 // & sql Unit
@@ -191,19 +186,13 @@ const sqlFieldExtra = (str: string) => {
  * sqlWhereLikeUnit('word1,word2', 'field1', {sep: 'or'})
  * => "`field1` like '%word1%' or `field1` like '%word2%'`"
  */
-const sqlWhereLikeUnit = (
-  wordsStr: string,
-  field: string,
-  { sep = "and", isNot = false }
-) => {
+const sqlWhereLikeUnit = (wordsStr: string, field: string, { sep = "and", isNot = false }) => {
   const notTag = isNot ? " not" : " ";
   const words = wordsStr.trim().split(",");
   if (words.length === 0 || wordsStr.trim() === "") {
     return "";
   }
-  const whereStr = words
-    .map((word) => `\`${field}\`${notTag} like '%${word}%'`)
-    .join(` ${sep} `);
+  const whereStr = words.map((word) => `\`${field}\`${notTag} like '%${word}%'`).join(` ${sep} `);
   return whereStr;
 };
 
@@ -221,18 +210,12 @@ const sqlWhereLikeUnit = (
  * sqlWhereEqualUnit('word1,word2', 'field1', {isNot: true})
  * => "`field1` != 'word1' and `field1` != 'word2'"
  */
-const sqlWhereEqualUnit = (
-  wordsStr: string,
-  field: string,
-  { sep = "and", isNot = false }
-) => {
+const sqlWhereEqualUnit = (wordsStr: string, field: string, { sep = "and", isNot = false }) => {
   const words = wordsStr.trim().split(",");
   if (words.length === 0 || wordsStr.trim() === "") {
     return "";
   }
-  const whereStr = words
-    .map((word) => `\`${field}\`${isNot ? " !=" : " ="} '%${word}%'`)
-    .join(` ${sep} `);
+  const whereStr = words.map((word) => `\`${field}\`${isNot ? " !=" : " ="} '%${word}%'`).join(` ${sep} `);
   return whereStr;
 };
 
@@ -255,14 +238,7 @@ const sqlWhereEqualUnit = (
  */
 const sqlCreateTableUnitMysql = (arr: string[]) => {
   if (arr[0] == "-") return "";
-  const arrConverted = [
-    sqlKeyStr(arr[0]),
-    arr[1],
-    sqlFieldNull(arr[2]),
-    sqlFieldKey(arr[3]),
-    sqlFieldDefault(arr[4]),
-    arr[5],
-  ];
+  const arrConverted = [sqlKeyStr(arr[0]), arr[1], sqlFieldNull(arr[2]), sqlFieldKey(arr[3]), sqlFieldDefault(arr[4]), arr[5]];
   return `${arrConverted.join(" ").replace(/ {2,}/g, " ").trim()}, `;
 };
 
@@ -277,14 +253,7 @@ const sqlCreateTableUnitMysql = (arr: string[]) => {
  */
 const sqlCreateTableUnitSqlite = (arr: string[]) => {
   if (arr[0] == "-") return "";
-  const arrConverted = [
-    sqlKeyStr(arr[0]),
-    sqlFieldType(arr[1]),
-    sqlFieldNull(arr[2]),
-    sqlFieldKey(arr[3]),
-    sqlFieldDefault(arr[4]),
-    sqlFieldExtra(arr[5]),
-  ];
+  const arrConverted = [sqlKeyStr(arr[0]), sqlFieldType(arr[1]), sqlFieldNull(arr[2]), sqlFieldKey(arr[3]), sqlFieldDefault(arr[4]), sqlFieldExtra(arr[5])];
   return `${arrConverted.join(" ").replace(/ {2,}/g, " ").trim()}, `;
 };
 
@@ -301,11 +270,8 @@ const sqlCreateTableUnitSqlite = (arr: string[]) => {
  * sqlSelect()
  * =>
  */
-const sqlSelect = (tableName: string, { fields = [], addStr = "" }) => {
-  const _fields =
-    fields.length > 0
-      ? fields.map((field) => sqlKeyStr(field.trim())).join(", ")
-      : "*";
+const sqlSelect = (tableName: string, { fields = [""], addStr = "" }) => {
+  const _fields = fields.length > 0 ? fields.map((field) => sqlKeyStr(field.trim())).join(", ") : "*";
   const sql = `SELECT ${_fields} FROM ${tableName}`;
   return addStr ? `${sql} ${addStr};` : `${sql};`;
 };
@@ -324,9 +290,7 @@ const sqlSelect = (tableName: string, { fields = [], addStr = "" }) => {
 const sqlInsertOne = (tableName: string, data: any) => {
   const keys = Object.keys(data);
   const values = Object.values(data);
-  return `INSERT IGNORE INTO ${tableName} (${sqlJoinKeys(
-    keys
-  )}) VALUES (${sqlJoinVals(values)});`;
+  return `INSERT IGNORE INTO ${tableName} (${sqlJoinKeys(keys)}) VALUES (${sqlJoinVals(values)});`;
 };
 
 /**
@@ -361,11 +325,9 @@ const sqlDelete = (tableName: string, addStr: string) => {
  * ```
  * ```
  */
-const sqlCreateTableMysql = ({ tableName = "", schemaArrs = [[]] }) => {
+const sqlCreateTableMysql = ({ tableName = "", schemaArrs = [[""]] }) => {
   let sql = `CREATE TABLE IF NOT EXISTS ${tableName} (`;
-  sql += schemaArrs
-    .slice(1)
-    .reduce((acc, cur) => `${acc}\n  ${sqlCreateTableUnitMysql(cur)}`, "");
+  sql += schemaArrs.slice(1).reduce((acc, cur) => `${acc}\n  ${sqlCreateTableUnitMysql(cur)}`, "");
 
   return `${sql.trim().slice(0, -1)}\n);`;
 };
@@ -405,9 +367,7 @@ const sqlBackupTableMysql = (tableName: string, filePath: string) => {
  */
 const sqlCreateTableSqlite = ({ tableName = "", schemaArrs = [[]] }) => {
   let sql = `CREATE TABLE IF NOT EXISTS ${tableName} (`;
-  sql += schemaArrs
-    .slice(1)
-    .reduce((acc, cur) => `${acc}\n  ${sqlCreateTableUnitSqlite(cur)}`, "");
+  sql += schemaArrs.slice(1).reduce((acc, cur) => `${acc}\n  ${sqlCreateTableUnitSqlite(cur)}`, "");
 
   return `${sql.trim().slice(0, -1)}\n);`;
 };
@@ -429,16 +389,13 @@ const sqlCreateTableSqlite = ({ tableName = "", schemaArrs = [[]] }) => {
  * pocketbaseSchemaFromMysqlSchema(schemaArrs)
  * =>
  */
-const pocketbaseSchemaFromMysqlSchema = (
-  schemaArrs = [[]],
-  hasHeader = true
-) => {
-  let schema = [];
+const pocketbaseSchemaFromMysqlSchema = (schemaArrs: string[][], hasHeader = true) => {
+  let schema: any[] = [];
   if (hasHeader) {
     schemaArrs = schemaArrs.slice(1);
   }
   for (const arr of schemaArrs) {
-    let field = { name: arr[0], type: sqlFieldType(arr[1]) };
+    let field = { name: arr[0], type: sqlFieldType(arr[1]), required: false };
     if (arr[2].trim() == "NO") {
       field["required"] = true;
     }
@@ -447,9 +404,4 @@ const pocketbaseSchemaFromMysqlSchema = (
   return schema;
 };
 
-export {
-  sqlSelect,
-  sqlCreateTableMysql,
-  sqlCreateTableSqlite,
-  pocketbaseSchemaFromMysqlSchema,
-};
+export { sqlSelect, sqlCreateTableMysql, sqlCreateTableSqlite, pocketbaseSchemaFromMysqlSchema };

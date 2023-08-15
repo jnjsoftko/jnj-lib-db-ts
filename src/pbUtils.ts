@@ -1,13 +1,6 @@
 import { getUpsertDicts, removeDictKeys } from "jnj-lib-base";
 
-const DEL_FIELDS = [
-  "id",
-  "created",
-  "updated",
-  "collectionId",
-  "collectionName",
-  "expand",
-];
+const DEL_FIELDS = ["id", "created", "updated", "collectionId", "collectionName", "expand"];
 
 /**
  * Update Dict Keys
@@ -21,10 +14,7 @@ const DEL_FIELDS = [
  *
  */
 function updateDictKeys(dict: any, maps: any, keys: string[] = []) {
-  const dels =
-    !keys || keys.length == 0
-      ? DEL_FIELDS
-      : Object.keys(dict).filter((key: string) => !keys.includes(key));
+  const dels = !keys || keys.length == 0 ? DEL_FIELDS : Object.keys(dict).filter((key: string) => !keys.includes(key));
 
   dict = removeDictKeys(dict, dels);
 
@@ -54,10 +44,7 @@ function updateDictKeys(dict: any, maps: any, keys: string[] = []) {
  * => [{a1: 1, b: 2, c1: 3}, {a1: 6, b: 7, c1: 8}]
  */
 function updateDictsKeys(dicts: any[], maps: any, keys: string[] = []) {
-  const dels =
-    !keys || keys.length == 0
-      ? DEL_FIELDS
-      : Object.keys(dicts[0]).filter((key: string) => !keys.includes(key));
+  const dels = !keys || keys.length == 0 ? DEL_FIELDS : Object.keys(dicts[0]).filter((key: string) => !keys.includes(key));
 
   dicts = dicts.map((dict) => removeDictKeys(dict, dels));
 
@@ -97,45 +84,45 @@ function updateDictsKeys(dicts: any[], maps: any, keys: string[] = []) {
 }
  */
 
-function upsertPbDicts(olds: any[], news: any[], keys: any[]) {
-  const upserts = {
-    adds: [], // 추가 data
-    delIds: [], // 삭제 id
-    upds: [], // 변경 data
-    updIds: [], // 변경 id
-  };
+// function upsertPbDicts(olds: any[], news: any[], keys: any[]) {
+//   const upserts = {
+//     adds: [], // 추가 data
+//     delIds: [], // 삭제 id
+//     upds: [], // 변경 data
+//     updIds: [], // 변경 id
+//   };
 
-  // Check for adds and upds dicts
-  news.forEach((newDict) => {
-    const matchingOldDict = olds.find((oldDict) =>
-      keys.every((key) => newDict[key] === oldDict[key])
-    );
+//   // Check for adds and upds dicts
+//   news.forEach((newDict) => {
+//     const matchingOldDict = olds.find((oldDict) =>
+//       keys.every((key) => newDict[key] === oldDict[key])
+//     );
 
-    if (!matchingOldDict) {
-      upserts.adds.push(newDict);
-    } else if (
-      !Object.entries(newDict).every(
-        ([key, value]) => matchingOldDict[key] === value
-      )
-    ) {
-      upserts.upds.push(newDict);
-      upserts.updIds.push(matchingOldDict.id);
-    }
-  });
+//     if (!matchingOldDict) {
+//       upserts.adds.push(newDict);
+//     } else if (
+//       !Object.entries(newDict).every(
+//         ([key, value]) => matchingOldDict[key] === value
+//       )
+//     ) {
+//       upserts.upds.push(newDict);
+//       upserts.updIds.push(matchingOldDict.id);
+//     }
+//   });
 
-  // Check for dels dicts
-  olds.forEach((oldDict) => {
-    const matchingNewDict = news.find((newDict) =>
-      keys.every((key) => oldDict[key] === newDict[key])
-    );
+//   // Check for dels dicts
+//   olds.forEach((oldDict) => {
+//     const matchingNewDict = news.find((newDict) =>
+//       keys.every((key) => oldDict[key] === newDict[key])
+//     );
 
-    if (!matchingNewDict) {
-      upserts.delIds.push(oldDict.id);
-    }
-  });
+//     if (!matchingNewDict) {
+//       upserts.delIds.push(oldDict.id);
+//     }
+//   });
 
-  return upserts;
-}
+//   return upserts;
+// }
 
 /**
  * Convert Mysql Schema (Googlesheet) to Sql(CREATE TABLE) String For Datatype
@@ -153,9 +140,7 @@ const sqlFieldType = (str: string) => {
   str = str.toLowerCase();
   if (str.includes("tinyint")) {
     str = "bool";
-  } else if (
-    ["int", "float", "decimal", "double"].some((dtype) => str.includes(dtype))
-  ) {
+  } else if (["int", "float", "decimal", "double"].some((dtype) => str.includes(dtype))) {
     str = "number";
   } else {
     str = "text";
@@ -173,16 +158,13 @@ const sqlFieldType = (str: string) => {
  * pocketbaseSchemaFromMysqlSchema(schemaArrs)
  * =>
  */
-const pocketbaseSchemaFromMysqlSchema = (
-  schemaArrs: any[],
-  hasHeader = true
-) => {
-  let schema = [];
+const pocketbaseSchemaFromMysqlSchema = (schemaArrs: any[], hasHeader = true) => {
+  let schema: any[] = [];
   if (hasHeader) {
     schemaArrs = schemaArrs.slice(1);
   }
   for (const arr of schemaArrs) {
-    let field = { name: arr[0], type: sqlFieldType(arr[1]) };
+    let field = { name: arr[0], type: sqlFieldType(arr[1]), required: false };
     if (arr[2].trim() == "NO") {
       field["required"] = true;
     }
@@ -194,7 +176,7 @@ const pocketbaseSchemaFromMysqlSchema = (
 export {
   updateDictKeys,
   updateDictsKeys,
-  upsertPbDicts,
+  // upsertPbDicts,
   sqlFieldType,
   pocketbaseSchemaFromMysqlSchema,
 };

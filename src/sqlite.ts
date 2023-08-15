@@ -1,6 +1,4 @@
 import sqlite3 from "sqlite3";
-// import path from 'path';
-// import { fileURLToPath } from 'url';
 import { sqlSelect, sqlCreateTableMysql, sqlCreateTableSqlite } from "./sql.js";
 
 export class Sqlite {
@@ -86,107 +84,6 @@ export class Sqlite {
   //   });
   // };
 }
-
-// // https://www.devkuma.com/docs/sqlite/
-// // https://alvinalexander.com/android/sqlite-default-datetime-field-current-time-now/
-// // [Datatypes In SQLite](https://www.sqlite.org/datatype3.html)
-
-// // 1XYOgmYG3SqAhqChUKpg4CRy9SnZ4Z5E3XQK3pRJ40Sw: moongobid@gmail.com  BidNotice > Admin >Table2
-
-// // @@ auto_increment => primary key autoincrement
-
-// //  on update current_timestamp => 제거(Error)
-
-// // CREATE TABLE IF NOT EXISTS testTable (
-// //   nid integer primary key autoincrement,
-// //   sn integer,
-// //   created_at timestamp default current_timestamp,
-// //   updated_at datetime default current_timestamp on update current_timestamp
-// // );
-
-// // * MYSQL
-// // CREATE TABLE IF NOT EXISTS testTable (
-// //   nid int not null auto_increment,
-// //   sn int,
-// //   기관명 varchar(40),
-// //   제목 varchar(100),
-// //   상세페이지주소 varchar(800),
-// //   작성일 date,
-// //   scraped_at datetime,
-// //   created_at timestamp not null default current_timestamp,
-// //   updated_at datetime not null default current_timestamp on update current_timestamp
-// // );
-
-// // // * SQLITE
-// // CREATE TABLE IF NOT EXISTS testTable (
-// //   nid integer not null primary key autoincrement,
-// //   sn integer,
-// //   기관명 text,
-// //   제목 text,
-// //   상세페이지주소 text,
-// //   작성일 date,
-// //   scraped_at datetime,
-// //   created_at timestamp not null default current_timestamp,
-// //   updated_at datetime not null default current_timestamp
-// // );
-
-// // * http://localhost:5173/notices/api/settings/tables/keywords
-
-// // // & sql
-// // const sqlCreateTableSqlite = ({ tableName, arrSchema }) => {
-// //   let sql = `CREATE TABLE IF NOT EXISTS ${tableName} (`;
-
-// //   const convTypeSql = (str) => {
-// //     str = str.toLowerCase();
-// //     if (str.includes('date')) {
-// //       return str;
-// //     }
-
-// //     if (str.includes('int')) {
-// //       str = 'integer';
-// //     } else if (['float', 'decimal', 'double'].some((dtype) => str.includes(dtype))) {
-// //       str = 'real';
-// //     } else {
-// //       str = 'text';
-// //     }
-// //     return str;
-// //   };
-
-// //   const convNullSql = (str) => {
-// //     return str.toUpperCase() == 'YES' ? '' : 'NOT NULL';
-// //   };
-
-// //   const convKeySql = (str) => {
-// //     return str.toUpperCase() == 'PRI' ? 'PRIMARY KEY' : str;
-// //   };
-
-// //   const convDefaultSql = (str) => {
-// //     return str.toUpperCase() == 'NULL' ? '' : `DEFAULT ${str}`;
-// //   };
-
-// //   const convExtraSql = (str) => {
-// //     if (!str) return '';
-// //     str = str.toUpperCase();
-// //     return str.replace('_', '').replace(' ON UPDATE CURRENT_TIMESTAMP', '');
-// //   };
-
-// //   const createSqlFromArrForMysql = (arr) => {
-// //     if (arr[0] == '-') return '';
-// //     const arrConverted = [
-// //       arr[0],
-// //       convTypeSql(arr[1]),
-// //       convNullSql(arr[2]),
-// //       convKeySql(arr[3]),
-// //       convDefaultSql(arr[4]),
-// //       convExtraSql(arr[5])
-// //     ];
-// //     return `${arrConverted.join(' ').replace(/ {2,}/g, ' ').trim()}, `;
-// //   };
-
-// //   sql += arrSchema.slice(1).reduce((acc, cur) => `${acc}/n  ${createSqlFromArrForMysql(cur)}`, '');
-
-// //   return `${sql.trim().slice(0, -1)}/n);`;
-// // };
 
 // // * sql :
 // // * CREATE TABLE
