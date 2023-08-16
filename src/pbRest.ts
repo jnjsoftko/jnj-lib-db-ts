@@ -1,37 +1,10 @@
-/** PbRest
- *
- * Description
- *   - A Class For Using Pocketbase Rest API
- *
- * Functions
- *   [X]
- *
- * Usages
- *   -
- *
- * Requirements
- *   - pocketbase.exe serve --dir="backend/pocketbase/sqlite" --http="127.0.0.1:8090"
- *
- * References
- *   - https://inpa.tistory.com/entry/AXIOS-📚-설치-사용
- *
- * Authors
- *   - Moon In Learn <mooninlearn@gmail.com>
- *   - JnJsoft Ko <jnjsoft.ko@gmail.com>
- */
-//
-// & Import AREA
-// &---------------------------------------------------------------------------
-// ? Builtin Modules
+// pocketbase.exe serve --dir="C:\JnJ-soft\Projects\external\ilmac-office-tools\backend\pocketbase\sqlite"
+// * https://inpa.tistory.com/entry/AXIOS-📚-설치-사용
 
-// ? External Modules
+// & Import
 import axios from "axios";
-
-// ? UserMade Modules
 import { loadCsv } from "jnj-lib-doc";
 
-// & Function AREA
-// &---------------------------------------------------------------------------
 // { method, headers, params, data, token }
 const requestAxios = async (url: string, option: any) => {
   let method = option.method ?? "GET";
@@ -65,13 +38,12 @@ const requestAxios = async (url: string, option: any) => {
   return response;
 };
 
-// & Class AREA
-// &---------------------------------------------------------------------------
-class PbRest {
+// & CLASS
+export class PbRest {
   baseUrl: string = "";
   token: string = "";
 
-  // * CONSTRUCTOR
+  // & CONSTRUCTOR
   constructor(pbServerUrl: string) {
     this.baseUrl = `${pbServerUrl}`;
   }
@@ -123,16 +95,28 @@ class PbRest {
     let response;
     switch (act) {
       case "list":
-        response = await requestAxios(`${this.baseUrl}/api/collections/${name}/records`, { token: this.token });
+        response = await requestAxios(
+          `${this.baseUrl}/api/collections/${name}/records`,
+          { token: this.token }
+        );
         return response?.data?.items;
       case "search":
-        response = await requestAxios(`${this.baseUrl}/api/collections/${name}/records`, { params, token: this.token });
+        response = await requestAxios(
+          `${this.baseUrl}/api/collections/${name}/records`,
+          { params, token: this.token }
+        );
         return response?.data?.items;
       case "first":
-        response = await requestAxios(`${this.baseUrl}/api/collections/${name}/records`, { params, token: this.token });
+        response = await requestAxios(
+          `${this.baseUrl}/api/collections/${name}/records`,
+          { params, token: this.token }
+        );
         return response?.data?.items[0];
       case "view":
-        response = await requestAxios(`${this.baseUrl}/api/collections/${name}/records/${id}`, { params, token: this.token });
+        response = await requestAxios(
+          `${this.baseUrl}/api/collections/${name}/records/${id}`,
+          { params, token: this.token }
+        );
         return response?.data;
     }
   }
@@ -140,18 +124,33 @@ class PbRest {
   /**
    * MutateOne()
    */
-  async mutateOne({ name = "", id = "", params = {}, data = {}, act = "insert" }) {
+  async mutateOne({
+    name = "",
+    id = "",
+    params = {},
+    data = {},
+    act = "insert",
+  }) {
     act = act.toLowerCase();
     let response;
     switch (act) {
       case "insert":
-        response = await requestAxios(`${this.baseUrl}/api/collections/${name}/records`, { method: "POST", params, data, token: this.token });
+        response = await requestAxios(
+          `${this.baseUrl}/api/collections/${name}/records`,
+          { method: "POST", params, data, token: this.token }
+        );
         return response?.data;
       case "update":
-        response = await requestAxios(`${this.baseUrl}/api/collections/${name}/records/${id}`, { method: "PATCH", params, data, token: this.token });
+        response = await requestAxios(
+          `${this.baseUrl}/api/collections/${name}/records/${id}`,
+          { method: "PATCH", params, data, token: this.token }
+        );
         return response?.data;
       case "delete":
-        response = await requestAxios(`${this.baseUrl}/api/collections/${name}/records/${id}`, { method: "DELETE", token: this.token });
+        response = await requestAxios(
+          `${this.baseUrl}/api/collections/${name}/records/${id}`,
+          { method: "DELETE", token: this.token }
+        );
         return response?.data;
       // case "upsert":
       // response = await requestAxios(
@@ -166,7 +165,13 @@ class PbRest {
   /**
    * MutateOne()
    */
-  async mutate({ name = "", ids = [], params = {}, data = [{}], act = "insert" }) {
+  async mutate({
+    name = "",
+    ids = [],
+    params = {},
+    data = [{}],
+    act = "insert",
+  }) {
     act = act.toLowerCase();
     let response;
     switch (act) {
@@ -217,8 +222,6 @@ class PbRest {
   }
 }
 
-// & Test AREA
-// &---------------------------------------------------------------------------
 // // * Realtime
 // const pbRealtime = async ({ name, id, token }) => {
 //   const url = `${pocketbaseUrl}/api/realtime`;
@@ -235,7 +238,3 @@ class PbRest {
 //   });
 //   return response.data;
 // };
-
-// & Export AREA
-// &---------------------------------------------------------------------------
-export { PbRest };

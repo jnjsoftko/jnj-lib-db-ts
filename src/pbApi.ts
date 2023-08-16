@@ -1,4 +1,4 @@
-/** PbApi
+/** pbApi
  *
  * Description
  *   - A Class For Using Pocketbase API
@@ -11,8 +11,6 @@
  *   - pba.init(<email>, <password>)
  *
  * Requirements
- *   - pocketbase.exe serve --dir="backend/pocketbase/sqlite" --http="127.0.0.1:8090"
- *
  *   - jnj-lib-base jnj-lib-doc jnj-lib-google
  *   - sqlite3 pocketbase mysql
  *   ```sh
@@ -43,15 +41,18 @@
 // ? External Modules
 import PocketBase from "pocketbase";
 
+// ? External Modules
+import dotenv from "dotenv";
+
 // ? UserMade Modules
 import { loadCsv } from "jnj-lib-doc";
 
 // ? Local Modules
-import { updateDictKeys, updateDictsKeys } from "./pbUtils.js";
+import { updateDictKeys, updateDictsKeys, sqlFieldType, pocketbaseSchemaFromMysqlSchema } from "./pbUtils.js";
 
 // & Class AREA
 // &---------------------------------------------------------------------------
-class PbApi {
+export class PbApi {
   pb;
 
   // * CONSTRUCTOR
@@ -206,23 +207,19 @@ class PbApi {
     }
   }
 
-  /**
-   * Insert Data By Csv
-   *
-   * @param name - collection name
-   * @param data - inserted data(dicts)
-   *
-   * @example
-   *
-   * await insertByCsv("level", "../data/level.csv");
-   */
-  async insertByCsv({ name = "", path = "", maps = null }) {
-    let data = loadCsv(path);
-    data = !maps ? data : updateDictKeys(data, maps);
-    await this.mutate({ name, data, ids: null, maps, act: "insert" });
-  }
+  // /**
+  //  * Insert Data By Csv
+  //  *
+  //  * @param name - collection name
+  //  * @param data - inserted data(dicts)
+  //  *
+  //  * @example
+  //  *
+  //  * await insertByCsv("level", "../data/level.csv");
+  //  */
+  // async insertByCsv({ name = "", path = "", maps = null }) {
+  //   let data = loadCsv(path);
+  //   data = !maps ? data : updateDictKeys(data, maps);
+  //   await this.insert(name, data);
+  // }
 }
-
-// & Export AREA
-// &---------------------------------------------------------------------------
-export { PbApi };
