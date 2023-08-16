@@ -1,6 +1,6 @@
 {
   "name": "jnj-lib-db",
-  "version": "0.1.12",
+  "version": "0.1.13",
   "main": "./cjs/index.js",
   "module": "./esm/index.js",
   "exports": {
