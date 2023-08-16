@@ -15,6 +15,7 @@
  *
  * References
  *   - [[SQLite] 데이터 추가/변경하기(UPDATE, REPLACE INTO, INSERT OR IGNORE INTO)](https://heytech.tistory.com/43)
+ *   - https://developer88.tistory.com/entry/SQLite-NodeJS에서-구현하는-방법-정리-SQLite3
  *
  * Authors
  *   - Moon In Learn <mooninlearn@gmail.com>
@@ -29,7 +30,7 @@
 import sqlite3 from "sqlite3";
 
 // ? Local Modules
-import { sqlSelect } from "./sqlCommon.js";
+import { sqlSelect, sqlInsertOne } from "./sqlCommon.js";
 
 // & Class AREA
 // &---------------------------------------------------------------------------
@@ -115,6 +116,11 @@ class Sqlite {
   //     });
   //   });
   // };
+
+  insert = (tableName: string, data: any) => {
+    this.conn.run(sqlInsertOne(tableName, data));
+    // await sqlite.conn.run("insert into tableInfo (`table_name`, `use`) values ('testTable', 1)");
+  };
 }
 
 // & Test AREA
