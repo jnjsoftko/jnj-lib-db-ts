@@ -67,7 +67,7 @@ const requestAxios = async (url: string, option: any) => {
 
 // & Class AREA
 // &---------------------------------------------------------------------------
-export class PbRest {
+class PbRest {
   baseUrl: string = "";
   token: string = "";
 
@@ -235,3 +235,7 @@ export class PbRest {
 //   });
 //   return response.data;
 // };
+
+// & Export AREA
+// &---------------------------------------------------------------------------
+export { PbRest };

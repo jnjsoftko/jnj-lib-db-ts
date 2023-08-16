@@ -51,7 +51,7 @@ import { updateDictKeys, updateDictsKeys } from "./pbUtils.js";
 
 // & Class AREA
 // &---------------------------------------------------------------------------
-export class PbApi {
+class PbApi {
   pb;
 
   // * CONSTRUCTOR
@@ -222,3 +222,7 @@ export class PbApi {
     await this.mutate({ name, data, ids: null, maps, act: "insert" });
   }
 }
+
+// & Export AREA
+// &---------------------------------------------------------------------------
+export { PbApi };

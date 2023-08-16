@@ -33,7 +33,7 @@ import { sqlSelect } from "./sqlCommon.js";
 
 // & Class AREA
 // &---------------------------------------------------------------------------
-export class Sqlite {
+class Sqlite {
   public conn: any;
 
   constructor(dbPath: string) {
@@ -139,3 +139,7 @@ export class Sqlite {
 // const sql = sqlCreateTableMysql({ tableName, arrSchema });
 
 // console.log(sql);
+
+// & Export AREA
+// &---------------------------------------------------------------------------
+export { Sqlite };
