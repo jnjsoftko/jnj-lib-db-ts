@@ -19,6 +19,7 @@
  *   - Moon In Learn <mooninlearn@gmail.com>
  *   - JnJsoft Ko <jnjsoft.ko@gmail.com>
  */
+//
 // & Import AREA
 // &---------------------------------------------------------------------------
 // ? Local Modules
@@ -88,7 +89,7 @@ const pocketbaseSchemaFromMysqlSchema = (schemaArrs: string[][], hasHeader = tru
   }
   for (const arr of schemaArrs) {
     let field = { name: arr[0], type: sqlFieldTypePocketbase(arr[1]), required: false };
-    if (arr[2].trim().toUpperCase() == "NO") {
+    if (arr[2].trim() == "NO") {
       field["required"] = true;
     }
     schema.push(field);

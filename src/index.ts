@@ -39,8 +39,8 @@ export { sqlCreateTableMysql } from "./sqlMysql.js";
 export { sqlCreateTableSqlite } from "./sqlSqlite.js";
 export { pocketbaseSchemaFromMysqlSchema } from "./sqlPocketbase.js";
 
-export { Sqlite } from "./sqlite.js";
+export { Sqlite } from "./Sqlite.js";
 
-export { PbApi } from "./pbApi.js";
+export { PbApi } from "./PbApi.js";
 
-export { PbRest } from "./pbRest.js";
+export { PbRest } from "./PbRest.js";
