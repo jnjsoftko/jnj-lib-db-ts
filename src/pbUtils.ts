@@ -1,7 +1,36 @@
+/** pbUtils
+ *
+ * Description
+ *   - Pocketbase Uitliy Functions
+ *
+ * Functions
+ *   [X]
+ *
+ * Usages
+ * -
+ * Requirements
+ * - jnj-lib-base
+ *
+ * References
+ *   -
+ *
+ * Authors
+ *   - Moon In Learn <mooninlearn@gmail.com>
+ *   - JnJsoft Ko <jnjsoft.ko@gmail.com>
+ */
+
+// & Import AREA
+// &---------------------------------------------------------------------------
+
+// ? UserMade Modules
 import { getUpsertDicts, removeDictKeys } from "jnj-lib-base";
 
+// & Variable AREA
+// &---------------------------------------------------------------------------
 const DEL_FIELDS = ["id", "created", "updated", "collectionId", "collectionName", "expand"];
 
+// & Function AREA
+// &---------------------------------------------------------------------------
 /**
  * Update Dict Keys
  *
@@ -13,7 +42,7 @@ const DEL_FIELDS = ["id", "created", "updated", "collectionId", "collectionName"
  *
  *
  */
-function updateDictKeys(dict: any, maps: any, keys: string[] = []) {
+const updateDictKeys = (dict: any, maps: any, keys: string[] = []) => {
   const dels = !keys || keys.length == 0 ? DEL_FIELDS : Object.keys(dict).filter((key: string) => !keys.includes(key));
 
   dict = removeDictKeys(dict, dels);
@@ -34,7 +63,7 @@ function updateDictKeys(dict: any, maps: any, keys: string[] = []) {
 
   // console.log("@@@@updateDictKeys _dict", _dict);
   return _dict;
-}
+};
 
 /**
  * Update Dicts Keys
@@ -43,7 +72,7 @@ function updateDictKeys(dict: any, maps: any, keys: string[] = []) {
  * updateDictsKeys([{a: 1, b: 2, c: 3, d: 4}, {a: 6, b: 7, c: 8, d: 9}], {a: 'a1', c: 'c1'}, ['a', 'b', 'c'])
  * => [{a1: 1, b: 2, c1: 3}, {a1: 6, b: 7, c1: 8}]
  */
-function updateDictsKeys(dicts: any[], maps: any, keys: string[] = []) {
+const updateDictsKeys = (dicts: any[], maps: any, keys: string[] = []) => {
   const dels = !keys || keys.length == 0 ? DEL_FIELDS : Object.keys(dicts[0]).filter((key: string) => !keys.includes(key));
 
   dicts = dicts.map((dict) => removeDictKeys(dict, dels));
@@ -67,7 +96,7 @@ function updateDictsKeys(dicts: any[], maps: any, keys: string[] = []) {
   });
 
   return _dicts;
-}
+};
 
 /**
  * Pocketbase용 upsert dicts
@@ -84,7 +113,7 @@ function updateDictsKeys(dicts: any[], maps: any, keys: string[] = []) {
 }
  */
 
-// function upsertPbDicts(olds: any[], news: any[], keys: any[]) {
+// const upsertPbDicts = (olds: any[], news: any[], keys: any[]) => {
 //   const upserts = {
 //     adds: [], // 추가 data
 //     delIds: [], // 삭제 id
@@ -124,59 +153,10 @@ function updateDictsKeys(dicts: any[], maps: any, keys: string[] = []) {
 //   return upserts;
 // }
 
-/**
- * Convert Mysql Schema (Googlesheet) to Sql(CREATE TABLE) String For Datatype
- * @param str - 'varchar(100)'|'int'|... (Mysql Datatype)
- * @returns text|number|bool|email|url|datetime|select|file|relation|json
- *
- * @remarks
- *   - For Only Sqlite, No Need for Mysql
- *
- * @example
- * sqlFieldType('varchar(100)')
- * => 'text'
- */
-const sqlFieldType = (str: string) => {
-  str = str.toLowerCase();
-  if (str.includes("tinyint")) {
-    str = "bool";
-  } else if (["int", "float", "decimal", "double"].some((dtype) => str.includes(dtype))) {
-    str = "number";
-  } else {
-    str = "text";
-  }
-  return str;
-};
-
-/**
- * Pocketbase Schema From Mysql Schema
- *
- * @param schema - []
- *
- * @example
- *
- * pocketbaseSchemaFromMysqlSchema(schemaArrs)
- * =>
- */
-const pocketbaseSchemaFromMysqlSchema = (schemaArrs: any[], hasHeader = true) => {
-  let schema: any[] = [];
-  if (hasHeader) {
-    schemaArrs = schemaArrs.slice(1);
-  }
-  for (const arr of schemaArrs) {
-    let field = { name: arr[0], type: sqlFieldType(arr[1]), required: false };
-    if (arr[2].trim() == "NO") {
-      field["required"] = true;
-    }
-    schema.push(field);
-  }
-  return schema;
-};
-
+// & Export AREA
+// &---------------------------------------------------------------------------
 export {
   updateDictKeys,
   updateDictsKeys,
   // upsertPbDicts,
-  sqlFieldType,
-  pocketbaseSchemaFromMysqlSchema,
 };

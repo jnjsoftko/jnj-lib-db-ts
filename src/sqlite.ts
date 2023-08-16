@@ -1,7 +1,39 @@
-import sqlite3 from "sqlite3";
-import { sqlSelect, sqlCreateTableMysql, sqlCreateTableSqlite } from "./sql.js";
+/** Sqlite
+ *
+ * Description
+ *   - A Class For Using Sqlite3
+ *
+ * Functions
+ *   [X]
+ *
+ * Usages
+ *   - const sqlite = Sqlite("C:/.../data.db")
+ *
+ * Requirements
+ *   - ./sqlCommon.js
+ *   -
+ *
+ * References
+ *   - [[SQLite] 데이터 추가/변경하기(UPDATE, REPLACE INTO, INSERT OR IGNORE INTO)](https://heytech.tistory.com/43)
+ *
+ * Authors
+ *   - Moon In Learn <mooninlearn@gmail.com>
+ *   - JnJsoft Ko <jnjsoft.ko@gmail.com>
+ */
 
-export class Sqlite {
+// & Import AREA
+// &---------------------------------------------------------------------------
+// ? Builtin Modules
+
+// ? External Modules
+import sqlite3 from "sqlite3";
+
+// ? Local Modules
+import { sqlSelect } from "./sqlCommon.js";
+
+// & Class AREA
+// &---------------------------------------------------------------------------
+class Sqlite {
   public conn: any;
 
   constructor(dbPath: string) {
@@ -85,6 +117,8 @@ export class Sqlite {
   // };
 }
 
+// & Test AREA
+// &---------------------------------------------------------------------------
 // // * sql :
 // // * CREATE TABLE
 // const arrSchema = [
@@ -105,3 +139,7 @@ export class Sqlite {
 // const sql = sqlCreateTableMysql({ tableName, arrSchema });
 
 // console.log(sql);
+
+// & Export AREA
+// &---------------------------------------------------------------------------
+export { Sqlite };
