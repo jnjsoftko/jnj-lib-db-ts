@@ -40,6 +40,7 @@ export {
   sqlValStr, // Convert val(ue) string(Wrap with `'`) ex) sqlValStr(a) => '1'
   sqlKeyValStr, // Convert Key equal Val string, ex) sqlKeyValStr('a', 1) => `a` = '1'
   sqlJoinKeys, // Convert Key string[] to serialized string (Wrap with '`') ex) sqlJoinKeys(['a', 'b']) => `a`, `b`
+  sqlJoinVals, // Convert Val string[] to serialized string (Wrap with `'`) ex) sqlJoinVals([1, '2']) => '1', '2'
   sqlJoinKeyVals, // sqlJoinKeyVals(['a', 'b'], [1, '2']) => `a` = '1', `b` = '2'
   // ? field schema
   sqlFieldNull, // Convert Mysql Schema (Googlesheet) to sql(CREATE TABLE) String For Null

@@ -28,7 +28,8 @@ import {
   sqlKeyStr, // Convert key string(Wrap with '`') ex) sqlKeyStr('a') => `a`
   // sqlValStr, // Convert val(ue) string(Wrap with `'`) ex) sqlValStr(a) => '1'
   // sqlKeyValStr, // Convert Key equal Val string, ex) sqlKeyValStr('a', 1) => `a` = '1'
-  // sqlJoinKeys, // Convert Key string[] to serialized string (Wrap with '`') ex) sqlJoinKeys(['a', 'b']) => `a`, `b`
+  sqlJoinKeys, // Convert Key string[] to serialized string (Wrap with '`') ex) sqlJoinKeys(['a', 'b']) => `a`, `b`
+  sqlJoinVals, // Convert Val string[] to serialized string (Wrap with `'`) ex) sqlJoinVals([1, '2']) => '1', '2'
   // sqlJoinKeyVals, // sqlJoinKeyVals(['a', 'b'], [1, '2']) => `a` = '1', `b` = '2'
   // ? field schema
   sqlFieldNull, // Convert Mysql Schema (Googlesheet) to sql(CREATE TABLE) String For Null
@@ -59,6 +60,23 @@ const sqlCreateTableUnitMysql = (arr: string[]) => {
   if (arr[0] == "-") return "";
   const arrConverted = [sqlKeyStr(arr[0]), arr[1], sqlFieldNull(arr[2]), sqlFieldKey(arr[3]), sqlFieldDefault(arr[4]), arr[5]];
   return `${arrConverted.join(" ").replace(/ {2,}/g, " ").trim()}, `;
+};
+
+/**
+ * INSERT Sql
+ *
+ * @param tableName -
+ * @param data
+ * @returns INSERT Sql Phrase Unit For (Mysql|Sqlite)
+ *
+ * @example
+ *  sqlInsertOne('table1', {'field1': 'val1', 'field2': 'val2'})
+ *  => INSERT INTO table1 (`field1`, `field2`) VALUES ('val1', 'val2')
+ */
+const sqlInsertOne = (tableName: string, data: any) => {
+  const keys = Object.keys(data);
+  const values = Object.values(data);
+  return `INSERT IGNORE INTO ${tableName} (${sqlJoinKeys(keys)}) VALUES (${sqlJoinVals(values)});`;
 };
 
 /**

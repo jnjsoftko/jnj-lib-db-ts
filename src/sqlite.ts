@@ -117,9 +117,15 @@ class Sqlite {
   //   });
   // };
 
-  insert = (tableName: string, data: any) => {
+  insertOne = (tableName: string, data: any) => {
     this.conn.run(sqlInsertOne(tableName, data));
     // await sqlite.conn.run("insert into tableInfo (`table_name`, `use`) values ('testTable', 1)");
+  };
+
+  insert = (tableName: string, data: any) => {
+    for (const d of data) {
+      this.conn.run(sqlInsertOne(tableName, d));
+    }
   };
 }
 
