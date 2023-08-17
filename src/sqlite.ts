@@ -118,8 +118,8 @@ class Sqlite {
   // };
 
   insertOne = (tableName: string, data: any) => {
-    console.log(sqlInsertOne(tableName, data));
-    // this.conn.run(sqlInsertOne(tableName, data));
+    // console.log(sqlInsertOne(tableName, data));
+    this.conn.run(sqlInsertOne(tableName, data));
     // await sqlite.conn.run("insert into tableInfo (`table_name`, `use`) values ('testTable', 1)");
   };
 
