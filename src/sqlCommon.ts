@@ -36,7 +36,8 @@ const sqlKeyStr = (key: string) => {
  */
 const sqlValStr = (val: any) => {
   if (typeof val === "string") {
-    return "'" + val.replace("'", "\\'").replace('"', '\\"') + "'";
+    return "'" + val.replace("'", "''") + "'";
+    // return "'" + val.replace("'", "\\'").replace('"', '\\"') + "'";
   }
   return val;
 };
