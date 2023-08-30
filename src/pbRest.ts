@@ -211,7 +211,7 @@ class PbRest {
    *
    * await insertByCsv("level", "../data/level.csv");
    */
-  async insertByCsv({ name, path, maps = {} }) {
+  async insertByCsv({ name = "", path = "", maps = {} }) {
     let data = loadCsv(path);
     await this.mutate({ name, data });
   }
