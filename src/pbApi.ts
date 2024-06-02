@@ -22,7 +22,7 @@
  *
  *  > `/.env`
  *  ```
- *  ENV_SETTINGS_PATH=C:/JnJ-soft/Developments/_Settings
+ *  DEV_SETTINGS=C:/JnJ-soft/Developments/_Settings
  *  PUBLIC_POCKETBASE_URL="http://127.0.0.1:8090"
  *  POCKETBASE_ADMIN_EMAIL=
  *  POCKETBASE_ADMIN_PASSWORD=
